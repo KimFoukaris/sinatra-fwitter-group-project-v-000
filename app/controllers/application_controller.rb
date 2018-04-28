@@ -70,7 +70,6 @@ class ApplicationController < Sinatra::Base
     end
 
     get '/tweets' do
-      #binding.pry
       if logged_in?
         @user = current_user
         erb :'/tweets/tweets'
@@ -80,8 +79,7 @@ class ApplicationController < Sinatra::Base
     end
 
     post '/tweets' do
-      #binding.pry
-        @user = current_user
+      @user = current_user
         if params[:content] != ""
           @tweet = Tweet.create(content: params[:content], user_id: @user.id)
           @tweet.save
@@ -91,17 +89,8 @@ class ApplicationController < Sinatra::Base
         end
       end
 
-    post '/tweets/:id/delete' do
-      if logged_in?
-        #binding.pry
-        @tweet=Tweet.find(params[:id])
-        if @tweet.user_id == current_user.id
-          @tweet.destroy
-        end
-      end
-    end
-
     get '/tweets/:id/edit' do
+      @user = current_user
       @tweet=Tweet.find(params[:id])
       if logged_in?
         erb :"/tweets/edit_tweet"
@@ -125,7 +114,7 @@ class ApplicationController < Sinatra::Base
       @tweet = Tweet.find(params[:id])
       @user=current_user
       if logged_in?
-        if params[:content] != ""
+        if params[:content].strip != ""
         @tweet = Tweet.update(params[:id], content: params[:content])
         @tweet.save
         erb :'/tweets/tweets'
@@ -134,6 +123,15 @@ class ApplicationController < Sinatra::Base
         end
       else
         redirect to '/login'
+      end
+    end
+
+    post '/tweets/:id/delete' do
+      if logged_in?
+        @tweet=Tweet.find(params[:id])
+        if @tweet.user_id == current_user.id
+          @tweet.destroy
+        end
       end
     end
 
