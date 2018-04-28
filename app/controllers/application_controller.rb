@@ -123,15 +123,18 @@ class ApplicationController < Sinatra::Base
     patch '/tweets/:id' do
       #binding.pry
       @tweet = Tweet.find(params[:id])
-      if params[:content] != ""
+      @user=current_user
+      if logged_in? 
+        if params[:content] != ""
         @tweet = Tweet.update(params[:id], content: params[:content])
         @tweet.save
-        @user=current_user
         erb :'/tweets/tweets'
+        else
+          redirect to '/tweets/#{@tweet.id}/edit'
+        end
       else
-        redirect to '/tweets/#{@tweet.id}/edit'
+        redirect to '/login'
       end
-
     end
 
   helpers do
