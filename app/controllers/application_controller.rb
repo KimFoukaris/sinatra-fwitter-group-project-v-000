@@ -119,7 +119,7 @@ class ApplicationController < Sinatra::Base
         @tweet.save
         erb :'/tweets/tweets'
         else
-          redirect to '/tweets/1/edit'
+          redirect to '/tweets/#{params[:id]}/edit'
         end
       else
         redirect to '/login'
