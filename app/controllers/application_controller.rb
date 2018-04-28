@@ -129,7 +129,7 @@ class ApplicationController < Sinatra::Base
         @user=current_user
         erb :'/tweets/tweets'
       else
-        redirect to '/tweets/#params[:id]/edit'
+        redirect to '/tweets/:id/edit'
       end
 
     end
