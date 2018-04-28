@@ -124,7 +124,7 @@ class ApplicationController < Sinatra::Base
       #binding.pry
       @tweet = Tweet.find(params[:id])
       @user=current_user
-      if logged_in? 
+      if logged_in?
         if params[:content] != ""
         @tweet = Tweet.update(params[:id], content: params[:content])
         @tweet.save
